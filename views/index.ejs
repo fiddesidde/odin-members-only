@@ -1,2 +1,8 @@
 <% layout('layouts/boilerplate') %>
-<h1>hello</h1>
+<h1>Welcome to a members only message board</h1>
+<% if (!currentUser) { %>
+    <div>Sign up or login over there...</div>
+
+<% } else if (currentUser) {%>
+    <div>Congrats, you're in.</div>
+<% } %>

@@ -8,10 +8,14 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const MongoStore = require('connect-mongo');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const Message = require('./models/message');
+
+const { isLoggedIn } = require('./middleware');
 
 const dbUrl = process.env.DB_URL;
 const secret = process.env.SECRET;
@@ -33,19 +37,21 @@ const app = express();
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs'); // so you can render('index')
-app.set('views', __dirname + '/views');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(
   session({
+    name: 'membrnly',
+    store: MongoStore.create({ mongoUrl: dbUrl, touchAfter: 24 * 3600 }),
     secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
       httpOnly: true,
-      // secure: true,
+      // secure: true, Uncomment when served over HTTPS
       expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
       maxAge: 1000 * 60 * 60 * 24 * 7,
     },
@@ -97,7 +103,22 @@ app.get('/login', (req, res) => {
   res.render('users/login');
 });
 
-app.get('/register', async (req, res) => {
+app.post(
+  '/login',
+  passport.authenticate('local', {
+    failureRedirect: '/login',
+    failureFlash: true,
+  }),
+  async (req, res) => {
+    const redirectUrl = req.session.returnTo || '/';
+    console.log(req.session);
+
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
+  }
+);
+
+app.get('/register', (req, res) => {
   res.render('users/register');
 });
 
@@ -112,6 +133,20 @@ app.post('/register', async (req, res, next) => {
     await user.save();
 
     res.redirect('/');
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+app.get('/messages', isLoggedIn, async (req, res, next) => {
+  try {
+    const messages = await Message.find({}).populate('author');
+    res.render('messages/all_messages', { messages });
   } catch (error) {
     next(error);
   }
