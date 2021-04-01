@@ -73,8 +73,6 @@ passport.use(
       } catch (error) {
         next(error);
       }
-
-      //   return done(null, user);
     });
   })
 );
@@ -97,7 +95,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => res.render('index'));
+app.get('/', async (req, res, next) => {
+  try {
+    const messages = await Message.find({}).populate('author');
+    res.render('index', { messages });
+  } catch (error) {
+    next(error);
+  }
+});
 
 app.get('/login', (req, res) => {
   res.render('users/login');
@@ -111,8 +116,6 @@ app.post(
   }),
   async (req, res) => {
     const redirectUrl = req.session.returnTo || '/';
-    console.log(req.session);
-
     delete req.session.returnTo;
     res.redirect(redirectUrl);
   }
@@ -143,10 +146,11 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/messages', isLoggedIn, async (req, res, next) => {
+app.get('/messages/:id', async (req, res, next) => {
   try {
-    const messages = await Message.find({}).populate('author');
-    res.render('messages/all_messages', { messages });
+    const message = await Message.findById(req.params.id).populate('author');
+
+    res.render('messages/view', { message });
   } catch (error) {
     next(error);
   }
