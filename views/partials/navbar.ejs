@@ -9,7 +9,10 @@
             <div class="navbar-nav">
                 <a class="nav-link" href="/">Home</a>
                 <% if (currentUser) { %>
-                 <a class="nav-link" href="/messages">Messages</a>
+                <a class="nav-link" href="/users/upgrade">Upgrade tier</a>
+                <% } %>
+                <% if (currentUser?.tier === 'member' || currentUser?.tier === 'admin') { %>
+                <a class="nav-link" href="/messages/new">Post message</a>
                 <% } %>
             </div>
             <div class="navbar-nav ms-auto">
@@ -18,7 +21,7 @@
                     <a href="/register" class="nav-link">Sign Up</a>
                     <% } else { %>
                         <span class="navbar-text">
-                            Logged in as: <%= currentUser.username %>
+                            Logged in as: <%= currentUser.email %> (tier: <%= currentUser.tier %> )
                         </span>
                         <a href="/logout" class="nav-link">Logout</a>
                         <% }%>

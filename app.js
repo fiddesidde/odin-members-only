@@ -17,6 +17,9 @@ const Message = require('./models/message');
 
 const { isLoggedIn } = require('./middleware');
 
+const userRoutes = require('./routes/users');
+const messageRoutes = require('./routes/messages');
+
 const dbUrl = process.env.DB_URL;
 const secret = process.env.SECRET;
 
@@ -59,10 +62,10 @@ app.use(
 );
 
 passport.use(
-  new LocalStrategy((username, password, done) => {
-    User.findOne({ username: username }, async (err, user) => {
+  new LocalStrategy({ usernameField: 'email' }, (username, password, done) => {
+    User.findOne({ email: username }, async (err, user) => {
       if (err) done(err);
-      if (!user) done(null, false, { message: 'Incorrect username' });
+      if (!user) done(null, false, { message: 'Incorrect email' });
       try {
         const result = await bcrypt.compare(password, user.hash);
         if (result) {
@@ -70,8 +73,8 @@ passport.use(
         } else {
           return done(null, false, { message: 'Incorrect password' });
         }
-      } catch (error) {
-        next(error);
+      } catch (err) {
+        done(err);
       }
     });
   })
@@ -95,62 +98,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/', userRoutes);
+app.use('/messages', messageRoutes);
+
 app.get('/', async (req, res, next) => {
   try {
     const messages = await Message.find({}).populate('author');
     res.render('index', { messages });
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.get('/login', (req, res) => {
-  res.render('users/login');
-});
-
-app.post(
-  '/login',
-  passport.authenticate('local', {
-    failureRedirect: '/login',
-    failureFlash: true,
-  }),
-  async (req, res) => {
-    const redirectUrl = req.session.returnTo || '/';
-    delete req.session.returnTo;
-    res.redirect(redirectUrl);
-  }
-);
-
-app.get('/register', (req, res) => {
-  res.render('users/register');
-});
-
-app.post('/register', async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-
-    const hash = await bcrypt.hash(password, 12);
-
-    const user = new User({ username, hash });
-
-    await user.save();
-
-    res.redirect('/');
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
-});
-
-app.get('/messages/:id', async (req, res, next) => {
-  try {
-    const message = await Message.findById(req.params.id).populate('author');
-
-    res.render('messages/view', { message });
   } catch (error) {
     next(error);
   }

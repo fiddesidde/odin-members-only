@@ -4,7 +4,7 @@
     <div>Sign up or login over there...</div>
 
 <% } else if (currentUser) {%>
-    <div>Congrats, you're in.</div>
+    <div>Congrats, you're in. Base tier users can only watch, go upgrade to participate.</div>
 <% } %>
 <% for( message of messages ) { %>
     <div class="card mb-3">
@@ -15,9 +15,11 @@
                         <h5 class="card-title">
                             <%= message.title %>
                         </h5>
-                        <div class="card-text text-muted">
-                            <%= message.author.username %>
-                        </div>
+                        <% if (currentUser?.tier === 'admin' || currentUser?.tier === 'member') { %>
+                            <div class="card-text text-muted">
+                                <%= message.author.email %>
+                            </div>
+                        <% } %>
                         <div class="card-text">
                             <%= message.content %>
                         </div>
