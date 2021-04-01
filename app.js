@@ -15,8 +15,6 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const Message = require('./models/message');
 
-const { isLoggedIn } = require('./middleware');
-
 const userRoutes = require('./routes/users');
 const messageRoutes = require('./routes/messages');
 

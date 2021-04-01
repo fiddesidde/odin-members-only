@@ -1,16 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const Message = require('../models/message');
+const { isLoggedIn, isMember } = require('../middleware');
 
-router.route('/:id').get(async (req, res, next) => {
-  try {
-    const message = await Message.findById(req.params.id).populate('author');
+const messages = require('../controllers/messages');
 
-    res.render('messages/view', { message });
-  } catch (error) {
-    next(error);
-  }
-});
+router.route('/new').get(isLoggedIn, isMember, messages.renderNewMessage);
+
+router.route('/:id').get(isLoggedIn, isMember, messages.viewMessage);
 
 module.exports = router;

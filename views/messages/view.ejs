@@ -12,7 +12,7 @@
                 <div class="card-text">
                     <%= message.content %>
                 </div>
-                <% if (currentUser?._id.equals(message.author._id)) { %>
+                <% if (currentUser?._id.equals(message.author._id || currentUser.tier === 'admin')) { %>
                     <div class="row">
                         <form action="/messages/<%= message._id %>/update" method="get">
                             <button class="btn btn-primary col-sm" type="submit">Update</button>
