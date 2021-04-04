@@ -13,3 +13,17 @@ module.exports.viewMessage = async (req, res, next) => {
 module.exports.renderNewMessage = (req, res) => {
   res.render('messages/new');
 };
+
+module.exports.newMessage = async (req, res, next) => {
+  try {
+    const id = req.user.id;
+    const { title, content } = req.body;
+
+    const msg = new Message({ title, content, author: id });
+    await msg.save();
+
+    res.redirect('/');
+  } catch (error) {
+    next(error);
+  }
+};

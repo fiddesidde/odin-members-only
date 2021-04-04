@@ -15,7 +15,7 @@
                 <% if (currentUser?._id.equals(message.author._id || currentUser.tier === 'admin')) { %>
                     <div class="row">
                         <form action="/messages/<%= message._id %>/update" method="get">
-                            <button class="btn btn-primary col-sm" type="submit">Update</button>
+                            <button class="btn btn-primary col-sm" type="submit">Edit</button>
                         </form>
                         <form action="/messages/<%= message._id %>/delete" method="post">
                             <button class="btn btn-danger col-sm" type="submit">Delete</button>

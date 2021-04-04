@@ -4,14 +4,14 @@
     <div>Sign up or login over there...</div>
 
 <% } else if (currentUser) {%>
-    <div>Congrats, you're in. Base tier users can only watch, go upgrade to participate.</div>
+    <div style="margin-bottom: 10px;">Congrats, you're in. Base tier users can only watch, go upgrade to participate.</div>
 <% } %>
 <% for( message of messages ) { %>
     <div class="card mb-3">
         <div class="row">
             <div class="col-md">
                 <div class="card-body">
-                    <a href="/messages/<%= message._id %>">
+                    <a class="msg-a" href="/messages/<%= message._id %>">
                         <h5 class="card-title">
                             <%= message.title %>
                         </h5>
