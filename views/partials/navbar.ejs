@@ -8,11 +8,11 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-link" href="/">Home</a>
-                <% if (currentUser) { %>
-                <a class="nav-link" href="/upgrade">Upgrade tier</a>
-                <% } %>
                 <% if (currentUser?.tier === 'member' || currentUser?.tier === 'admin') { %>
                 <a class="nav-link" href="/messages/new">Post message</a>
+                <% } %>
+                <% if (currentUser) { %>
+                <a class="nav-link" href="/upgrade">Upgrade tier</a>
                 <% } %>
             </div>
             <div class="navbar-nav ms-auto">
