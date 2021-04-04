@@ -9,7 +9,7 @@
             <div class="navbar-nav">
                 <a class="nav-link" href="/">Home</a>
                 <% if (currentUser) { %>
-                <a class="nav-link" href="/users/upgrade">Upgrade tier</a>
+                <a class="nav-link" href="/upgrade">Upgrade tier</a>
                 <% } %>
                 <% if (currentUser?.tier === 'member' || currentUser?.tier === 'admin') { %>
                 <a class="nav-link" href="/messages/new">Post message</a>

@@ -1,0 +1,23 @@
+<% layout('layouts/boilerplate') %>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Upgrade your Tier here</h5>
+                    <form action="/upgrade" method="POST" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label" for="passphrase">Passphrase:</label>
+                            <input class="form-control" type="password" id="passphrase" name="passphrase" required autofocus>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button class="btn btn-success ">Upgrade</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+    </div>
+</div>
