@@ -27,3 +27,14 @@ module.exports.newMessage = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports.deleteMessage = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await Message.findByIdAndDelete(id);
+
+    res.redirect('/');
+  } catch (error) {
+    next(error);
+  }
+};

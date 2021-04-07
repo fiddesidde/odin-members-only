@@ -9,6 +9,7 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const MongoStore = require('connect-mongo');
+const methodOverride = require('method-override');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -95,6 +96,8 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
+app.use(methodOverride('_method'));
 
 app.use('/', userRoutes);
 app.use('/messages', messageRoutes);

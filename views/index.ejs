@@ -1,28 +1,45 @@
 <% layout('layouts/boilerplate') %>
 <h1>Welcome to a members only message board</h1>
+
 <% if (!currentUser) { %>
     <div>Sign up or login over there...</div>
-
-<% } else if (currentUser) {%>
+<% } else if (currentUser.tier === 'base') {%>
     <div style="margin-bottom: 10px;">Congrats, you're in. Base tier users can only watch, go upgrade to participate.</div>
+<% } else { %>
+    <div style="margin-bottom: 10px;">You are a member, get posting.</div>
 <% } %>
-<% for( message of messages ) { %>
+
+<% for ( let i = messages.length - 1; i >= 0; i-- ) { %>
     <div class="card mb-3">
         <div class="row">
             <div class="col-md">
                 <div class="card-body">
-                    <a class="msg-a" href="/messages/<%= message._id %>">
+                    <a class="msg-a" href="/messages/<%= messages[i]._id %>">
                         <h5 class="card-title">
-                            <%= message.title %>
+                            <%= messages[i].title %>
                         </h5>
                         <% if (currentUser?.tier === 'admin' || currentUser?.tier === 'member') { %>
                             <div class="card-text text-muted">
-                                <%= message.author.email %>
+                                Author: <%= messages[i].author.email %>
                             </div>
                         <% } %>
-                        <div class="card-text">
-                            <%= message.content %>
+                        <div class="card-text mt-2">
+                            <%= messages[i].content %>
                         </div>
+                        <% if (currentUser?._id.equals(messages[i].author._id) ||currentUser?.tier === 'admin') { %>
+                            <div class="row mt-3">
+                                <div class="col-1">
+                                    <form action="/messages/<%= messages[i]._id %>/update" method="get">
+                                        <button class="btn btn-primary col-sm" type="submit">Edit</button>
+                                    </form>
+                                </div>
+                                <div class="col-1">
+                                    <form action="/messages/<%= messages[i]._id %>?_method=DELETE" method="POST">
+                                        <button class="btn btn-danger col-sm" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% } %>
                     </a>
                 </div>
             </div>
