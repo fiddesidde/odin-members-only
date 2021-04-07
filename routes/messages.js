@@ -12,7 +12,8 @@ router
 
 router
   .route('/:id')
-  .get(isLoggedIn, isMember, messages.viewMessage)
-  .delete(isLoggedIn, isAuthor, messages.deleteMessage);
+  .get(isLoggedIn, isAuthor, messages.editMessage)
+  .delete(isLoggedIn, isAuthor, messages.deleteMessage)
+  .put(isLoggedIn, isAuthor, messages.updateMessage);
 
 module.exports = router;
