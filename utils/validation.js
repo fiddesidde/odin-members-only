@@ -27,12 +27,11 @@ module.exports.validateSignup = [
 
   function (req, res, next) {
     const errors = validationResult(req);
-    console.log(errors);
 
     if (!errors.isEmpty()) {
-      console.log('hey');
-
-      return next(errors.array());
+      const err = errors.array();
+      err.message = 'Validation Error';
+      return next(err);
     }
     next();
   },
