@@ -19,7 +19,12 @@ module.exports.newMessage = async (req, res, next) => {
     const id = req.user.id;
     const { title, content } = req.body;
 
-    const msg = new Message({ title, content, author: id });
+    const msg = new Message({
+      title,
+      content,
+      author: id,
+      date_posted: new Date(),
+    });
     await msg.save();
 
     res.redirect('/');

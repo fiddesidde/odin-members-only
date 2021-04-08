@@ -21,6 +21,9 @@
                         <div class="card-text text-muted">
                             Author: <%= messages[i].author.email %>
                         </div>
+                        <div class="card-text text-muted">
+                            <%= messages[i].date_posted.toUTCString() %>
+                        </div>
                     <% } %>
                     <div class="card-text mt-2">
                         <%= messages[i].content %>

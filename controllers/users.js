@@ -13,7 +13,6 @@ module.exports.renderRegister = (req, res) => {
 module.exports.register = async (req, res, next) => {
   try {
     const { firstname, lastname, email, password } = req.body;
-    console.log(firstname, lastname, email, password);
 
     const hash = await bcrypt.hash(password, 12);
 
