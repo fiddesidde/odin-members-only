@@ -4,9 +4,14 @@ const router = express.Router();
 
 const { isLoggedIn } = require('../middleware');
 
+const { validateSignup } = require('../utils/validation');
+
 const users = require('../controllers/users');
 
-router.route('/register').get(users.renderRegister).post(users.register);
+router
+  .route('/register')
+  .get(users.renderRegister)
+  .post(validateSignup, users.register);
 
 router
   .route('/login')
