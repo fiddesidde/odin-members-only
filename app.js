@@ -10,6 +10,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const MongoStore = require('connect-mongo');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -94,6 +95,8 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
   next();
 });
 
