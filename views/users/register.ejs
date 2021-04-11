@@ -4,7 +4,7 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <h5 class="card-title">Register</h5>
-                        <form action="/register" method="POST" class="needs-validation" novalidate>
+                        <form action="/register" method="POST" class="needs-validation" novalidate oninput='passwordConfirm.setCustomValidity(passwordConfirm.value != password.value ? "Passwords do not match." : "")'>
                             <div class="mb-3">
                                 <label class="form-label" for="email">Email</label>
                                 <input class="form-control" type="email" id="email" name="email" required autofocus>
@@ -19,6 +19,14 @@
                                     Looks good!
                                 </div>
                                 <div class="invalid-feedback">Password must be atleast 6 chars long</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="passwordConfirm">Confirm Password</label>
+                                <input class="form-control" type="password" id="passwordConfirm" name="passwordConfirm" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">Passwords does not match</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="firstname">First name</label>

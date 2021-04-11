@@ -2,7 +2,7 @@
 <h1>Welcome to a members only message board</h1>
 
 <% if (!currentUser) { %>
-    <div>Sign up or login over there...</div>
+    <div style="margin-bottom: 10px;">Sign up or login over there...</div>
 <% } else if (currentUser.tier === 'base') {%>
     <div style="margin-bottom: 10px;">Congrats, you're in. Base tier users can only watch, go upgrade to participate.</div>
 <% } else { %>
