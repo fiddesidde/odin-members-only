@@ -4,10 +4,16 @@ module.exports.validateSignup = [
   body('email').isEmail().normalizeEmail(),
 
   body('password')
-    .trim()
+    .exists()
     .isLength({ min: 6 })
-    .withMessage('Password must be atleast 6 characters long')
-    .escape(),
+    .withMessage('Password must be atleast 6 characters long'),
+
+  body('passwordConfirm')
+    .exists()
+    .custom((value, { req }) => value === req.body.password)
+    .withMessage(
+      'Password confirmation field must have the same value as the password field'
+    ),
 
   body('firstname')
     .trim()
