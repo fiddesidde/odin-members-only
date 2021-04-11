@@ -31,6 +31,7 @@ module.exports.renderLogin = (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
+  req.flash('success', `Welcome back ${req.user.firstname}`);
   const redirectUrl = req.session.returnTo || '/';
   delete req.session.returnTo;
   res.redirect(redirectUrl);
@@ -52,12 +53,17 @@ module.exports.upgradeTier = async (req, res, next) => {
     passphrase !== process.env.MEMBER_PASSPHRASE &&
     passphrase !== process.env.ADMIN_PASSPHRASE
   ) {
-    const err = new Error('Wrong Passphrase');
-    return next(err);
+    req.flash('error', 'Wrong passphrase');
+    return res.redirect('/upgrade');
   }
   const user = { id, email, firstname, lastname };
-  if (passphrase === process.env.MEMBER_PASSPHRASE) user.tier = 'member';
-  else user.tier = 'admin';
+  if (passphrase === process.env.MEMBER_PASSPHRASE) {
+    user.tier = 'member';
+    req.flash('success', 'You are now in Tier Member');
+  } else {
+    req.flash('success', 'You are now in Tier Admin');
+    user.tier = 'admin';
+  }
 
   await User.findByIdAndUpdate(id, user);
 

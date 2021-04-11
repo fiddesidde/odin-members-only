@@ -44,7 +44,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(
   session({
     name: 'membrnly',
@@ -60,6 +59,8 @@ app.use(
     },
   })
 );
+app.use(methodOverride('_method'));
+app.use(flash());
 
 passport.use(
   new LocalStrategy({ usernameField: 'email' }, (username, password, done) => {
@@ -99,8 +100,6 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error');
   next();
 });
-
-app.use(methodOverride('_method'));
 
 app.use('/', userRoutes);
 app.use('/messages', messageRoutes);
