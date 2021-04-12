@@ -17,7 +17,7 @@ module.exports.validateSignup = [
 
   body('firstname')
     .trim()
-    .isLength({ min: 2 })
+    .isLength({ min: 1 })
     .escape()
     .withMessage('First name must be specified')
     .isAlphanumeric()
