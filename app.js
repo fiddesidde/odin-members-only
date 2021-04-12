@@ -17,7 +17,6 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const Message = require('./models/message');
 
-const indexRouter = express.Router();
 const userRoutes = require('./routes/users');
 const messageRoutes = require('./routes/messages');
 
@@ -105,12 +104,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use('/', userRoutes);
-// app.use('/messages', messageRoutes);
-userRoutes.use('/messages', messageRoutes);
-app.use(config.baseUrl, userRoutes);
+app.use('/', userRoutes);
+app.use('/messages', messageRoutes);
+// userRoutes.use('/messages', messageRoutes);
+// app.use(config.baseUrl, userRoutes);
 
-app.get(config.baseUrl, async (req, res, next) => {
+app.get('/', async (req, res, next) => {
   try {
     const messages = await Message.find({}).populate('author');
     res.render('index', { messages });
