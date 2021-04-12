@@ -1,4 +1,5 @@
 const Message = require('../models/message');
+const config = require('../utils/config');
 
 module.exports.editMessage = async (req, res, next) => {
   try {
@@ -27,7 +28,7 @@ module.exports.newMessage = async (req, res, next) => {
     });
     await msg.save();
 
-    res.redirect('/');
+    res.redirect(config.baseUrl);
   } catch (error) {
     next(error);
   }
@@ -38,7 +39,7 @@ module.exports.deleteMessage = async (req, res, next) => {
     const { id } = req.params;
     await Message.findByIdAndDelete(id);
 
-    res.redirect('/');
+    res.redirect(config.baseUrl);
   } catch (error) {
     next(error);
   }
@@ -53,7 +54,7 @@ module.exports.updateMessage = async (req, res, next) => {
 
     const updatedPost = await Message.findByIdAndUpdate(id, newPost);
 
-    res.redirect(`/`);
+    res.redirect(config.baseUrl);
   } catch (error) {
     next(error);
   }
