@@ -4,7 +4,7 @@
         <div class="card shadow">
             <div class="card-body">
                 <h5 class="card-title">New Post</h5>
-                <form action="new" method="POST" class="validated-form" novalidate>
+                <form action="<%= baseUrl %>messages/new" method="POST" class="validated-form" novalidate>
                     <div class="mb-3">
                         <label class="form-label" for="title">Title</label>
                         <input class="form-control" type="text" id="title" name="title" autofocus

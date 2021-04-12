@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
+const config = require('../utils/config');
 
 module.exports.renderRegister = (req, res) => {
   res.render('users/register');
@@ -20,7 +21,7 @@ module.exports.register = async (req, res, next) => {
 
     await user.save();
 
-    res.redirect('/');
+    res.redirect(config.baseUrl);
   } catch (error) {
     next(error);
   }
@@ -32,14 +33,14 @@ module.exports.renderLogin = (req, res) => {
 
 module.exports.login = async (req, res) => {
   req.flash('success', `Welcome back ${req.user.firstname}`);
-  const redirectUrl = req.session.returnTo || '/';
+  const redirectUrl = req.session.returnTo || config.baseUrl;
   delete req.session.returnTo;
   res.redirect(redirectUrl);
 };
 
 module.exports.logout = (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect(config.baseUrl);
 };
 
 module.exports.renderUpgrade = (req, res) => {
@@ -54,7 +55,7 @@ module.exports.upgradeTier = async (req, res, next) => {
     passphrase !== process.env.ADMIN_PASSPHRASE
   ) {
     req.flash('error', 'Wrong passphrase');
-    return res.redirect('/upgrade');
+    return res.redirect(`${config.baseUrl}upgrade`);
   }
   const user = { id, email, firstname, lastname };
   if (passphrase === process.env.MEMBER_PASSPHRASE) {
@@ -67,5 +68,5 @@ module.exports.upgradeTier = async (req, res, next) => {
 
   await User.findByIdAndUpdate(id, user);
 
-  res.redirect('/');
+  res.redirect(config.baseUrl);
 };

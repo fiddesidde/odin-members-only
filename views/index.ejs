@@ -31,12 +31,12 @@
                     <% if (currentUser?._id.equals(messages[i].author._id) ||currentUser?.tier === 'admin') { %>
                         <div class="row mt-3">
                             <div class="col-1">
-                                <form action="/messages/<%= messages[i]._id %>" method="get">
+                                <form action="<%= baseUrl %>messages/<%= messages[i]._id %>" method="get">
                                     <button class="btn btn-primary col-sm" type="submit">Edit</button>
                                 </form>
                             </div>
                             <div class="col-1">
-                                <form action="/messages/<%= messages[i]._id %>?_method=DELETE" method="POST">
+                                <form action="<%= baseUrl %>messages/<%= messages[i]._id %>?_method=DELETE" method="POST">
                                     <button class="btn btn-danger col-sm" type="submit">Delete</button>
                                 </form>
                             </div>
