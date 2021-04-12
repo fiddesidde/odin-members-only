@@ -1,29 +1,29 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">membersOnly</a>
+        <a class="navbar-brand" href="<%= baseUrl %>">membersOnly</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="<%= baseUrl %>">Home</a>
                 <% if (currentUser?.tier === 'member' || currentUser?.tier === 'admin') { %>
-                <a class="nav-link" href="/messages/new">Post message</a>
+                <a class="nav-link" href="<%= baseUrl %>messages/new">Post message</a>
                 <% } %>
                 <% if (currentUser) { %>
-                <a class="nav-link" href="/upgrade">Upgrade tier</a>
+                <a class="nav-link" href="<%= baseUrl %>upgrade">Upgrade tier</a>
                 <% } %>
             </div>
             <div class="navbar-nav ms-auto">
                 <% if (!currentUser) { %>
-                    <a href="/login" class="nav-link">Login</a>
-                    <a href="/register" class="nav-link">Sign Up</a>
+                    <a href="<%= baseUrl %>login" class="nav-link">Login</a>
+                    <a href="<%= baseUrl %>register" class="nav-link">Sign Up</a>
                     <% } else { %>
                         <span class="navbar-text">
                             Logged in as: <%= currentUser.email %> (tier: <%= currentUser.tier %> )
                         </span>
-                        <a href="/logout" class="nav-link">Logout</a>
+                        <a href="<%= baseUrl %>logout" class="nav-link">Logout</a>
                         <% }%>
             </div>
         </div>

@@ -4,7 +4,7 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <h5 class="card-title">Register</h5>
-                        <form action="/register" method="POST" class="needs-validation" novalidate oninput='passwordConfirm.setCustomValidity(passwordConfirm.value != password.value ? "Passwords do not match." : "")'>
+                        <form action="<%= baseUrl %>register" method="POST" class="needs-validation" novalidate oninput='passwordConfirm.setCustomValidity(passwordConfirm.value != password.value ? "Passwords do not match." : "")'>
                             <div class="mb-3">
                                 <label class="form-label" for="email">Email</label>
                                 <input class="form-control" type="email" id="email" name="email" required autofocus>

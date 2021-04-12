@@ -17,8 +17,11 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const Message = require('./models/message');
 
+const indexRouter = express.Router();
 const userRoutes = require('./routes/users');
 const messageRoutes = require('./routes/messages');
+
+const config = require('./utils/config');
 
 const dbUrl = process.env.DB_URL;
 const secret = process.env.SECRET;
@@ -98,13 +101,16 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
+  res.locals.baseUrl = config.baseUrl;
   next();
 });
 
-app.use('/', userRoutes);
-app.use('/messages', messageRoutes);
+// app.use('/', userRoutes);
+// app.use('/messages', messageRoutes);
+userRoutes.use('/messages', messageRoutes);
+app.use(config.baseUrl, userRoutes);
 
-app.get('/', async (req, res, next) => {
+app.get(config.baseUrl, async (req, res, next) => {
   try {
     const messages = await Message.find({}).populate('author');
     res.render('index', { messages });
