@@ -5,6 +5,7 @@ const router = express.Router();
 const { isLoggedIn } = require('../middleware');
 
 const { validateSignup } = require('../utils/validation');
+const config = require('../utils/config');
 
 const users = require('../controllers/users');
 
@@ -18,7 +19,7 @@ router
   .get(users.renderLogin)
   .post(
     passport.authenticate('local', {
-      failureRedirect: '/login',
+      failureRedirect: `${config.baseUrl}login`,
       failureFlash: true,
     }),
     users.login
